@@ -19,7 +19,9 @@ class Apartment_type(Model):
 
 
 class Property_type(Model):
-    property = ManyToManyField
+    House = ForeignKey(House)
+    Ground = ForeignKey(Ground)
+    Apartment = ForeignKey(Apartment)
 
 
 
@@ -50,7 +52,7 @@ class Apartment(Model):
 
 
 class property(Model):
-    property = ForeignKey(Property_type)
+    property = ManyToManyField(Property_type)
     city = ForeignKey(Cities)
     address = CharField(max_length=50)
     estimate_value = IntegerField(null=False)
