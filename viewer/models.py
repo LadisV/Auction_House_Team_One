@@ -1,6 +1,6 @@
 from django.db import models
 
-from django.db.models import Model, CharField, DateTimeField, ForeignKey
+from django.db.models import Model, CharField, DateTimeField, ForeignKey, ManyToManyField
 from django.forms import IntegerField
 
 
@@ -19,7 +19,7 @@ class Apartment_type(Model):
 
 
 class Property_type(Model):
-    property =
+    property = ManyToManyField
 
 
 
@@ -33,7 +33,7 @@ class House(Model):
     garden_area = IntegerField(null=False)
 
 
-class Holding(Model):
+class Ground(Model):
     name = CharField(max_length=50)
     property_type = ForeignKey(Ground_type)
     property_area = IntegerField(null=False)
@@ -50,7 +50,7 @@ class Apartment(Model):
 
 
 class property(Model):
-    property = ForeignKey(Typ_nemovitosti)
+    property = ForeignKey(Property_type)
     city = ForeignKey(Cities)
     address = CharField(max_length=50)
     estimate_value = IntegerField(null=False)
