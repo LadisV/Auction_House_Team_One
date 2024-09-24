@@ -13,8 +13,13 @@
         <nav>
             <ul>
                 <li><a href="{% url 'main' %}">Domů</a></li>
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="#">{{ user.username }}</a></li>
+                    <li><a href="{% url 'logout' %}">Odhlásit se</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Přihlásit se</a></li>
+                    <li><a href="{% url 'register' %}">Registrovat se</a></li>
+                {% endif %}
                 <li><a href="{% url 'auctions' %}">Aukce</a></li>
             </ul>
         </nav>
@@ -22,11 +27,15 @@
 
     <main>
         <h2>Vítejte na hlavní stránce</h2>
-        <p>Přihlásit se nebo zaregistrovat.</p>
-        <div class="buttons">
-            <a href="{% url 'login' %}" class="btn">Login</a>
-            <a href="{% url 'register' %}" class="btn">Register</a>
-        </div>
+        {% if user.is_authenticated %}
+            <p>Přihlášený uživatel: {{ user.username }}</p>
+        {% else %}
+            <p>Přihlásit se nebo zaregistrovat.</p>
+            <div class="buttons">
+                <a href="{% url 'login' %}" class="btn">Login</a>
+                <a href="{% url 'register' %}" class="btn">Register</a>
+            </div>
+        {% endif %}
     </main>
 
     <footer>
