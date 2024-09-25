@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
-
+from django.urls import path, include
 from Auction_house import settings
-from viewer.views import home, GroundsListView, ground, HousesListView, house, \
-    ApartmentsListView, apartment, AuctionsListView, auction
+from viewer.views import home, GroundsListView, ground, HousesListView, house, ApartmentsListView, apartment, AuctionsListView, auction
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    path('', include('viewer.urls')),
 
     path('', home, name='home'),
     path('houses/', HousesListView.as_view(), name='houses'),

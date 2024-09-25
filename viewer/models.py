@@ -130,6 +130,13 @@ class Auction(Model):
     min_bid = IntegerField(null=False)
     date_auction = DateTimeField(null=False)
 
+    STATUS_CHOICES = [
+        ('upcoming', 'Upcoming'),
+        ('ongoing', 'Ongoing'),
+        ('completed', 'Completed'),
+    ]
+    status = CharField(max_length=10, choices=STATUS_CHOICES, default='upcoming')
+
 
     def loc_time(self):
         local = time.localtime()

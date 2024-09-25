@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-9">
+      <h2>Momentální aukce</h2>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="currentAuctionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Všechny aukce
+        </button>
+        <div class="dropdown-menu" aria-labelledby="currentAuctionsDropdown">
+          <a class="dropdown-item" href="#">Všechny aukce</a>
+          <a class="dropdown-item" href="#">Domy</a>
+          <a class="dropdown-item" href="#">Byty</a>
+          <a class="dropdown-item" href="#">Pozemky</a>
+        </div>
+      </div>
+
+      <h2>Budoucí aukce</h2>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="futureAuctionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Všechny aukce
+        </button>
+        <div class="dropdown-menu" aria-labelledby="futureAuctionsDropdown">
+          <a class="dropdown-item" href="#">Všechny aukce</a>
+          <a class="dropdown-item" href="#">Domy</a>
+          <a class="dropdown-item" href="#">Byty</a>
+          <a class="dropdown-item" href="#">Pozemky</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <h3>Přihlášení/Registrace</h3>
+      <a class="btn btn-primary" href="{% url 'login' %}">Přihlásit</a>
+      <a class="btn btn-secondary" href="{% url 'register' %}">Registrovat</a>
+    </div>
+  </div>
+{% endblock %}
