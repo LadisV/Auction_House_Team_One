@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+
 from Auction_house import settings
-from viewer.views import home, GroundsListView, ground, HousesListView, house, ApartmentsListView, apartment, AuctionsListView, auction
+from viewer.views import home, GroundsListView, ground, HousesListView, house, \
+    ApartmentsListView, apartment, AuctionsListView, auction
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +28,7 @@ urlpatterns = [
     path('', include('viewer.urls')),
 
     path('', home, name='home'),
+
     path('houses/', HousesListView.as_view(), name='houses'),
     path('house/<pk>/', house, name='house'),
 
@@ -38,4 +41,40 @@ urlpatterns = [
     path('auctions/', AuctionsListView.as_view(), name='auctions'),
     path('auction/<pk>/', auction, name='auction'),
 
+
+    path('insert/', insert_data, name="insert_data"),
+
+
+    path('insert/houses', InsertHouse.as_view(), name="insert_houses"),
+    path('update/houses/<pk>', UpdateHouse.as_view(), name="update_houses"),
+    path('delete/houses/<pk>', DeleteHouse.as_view(), name="delete_houses"),
+
+
+    path('insert/apartments', InsertApartments.as_view(), name="insert_apartments"),
+    path('update/apartments/<pk>', UpdateApartments.as_view(), name="update_apartments"),
+    path('delete/apartments/<pk>', DeleteApartments.as_view(), name="delete_apartments"),
+
+
+    path('insert/grounds', InsertGrounds.as_view(), name="insert_grounds"),
+    path('update/grounds/<pk>', UpdateGrounds.as_view(), name="update_grounds"),
+    path('delete/grounds/<pk>', DeleteGrounds.as_view(), name="delete_grounds"),
+
+
+    path('insert/property_type', InsertPropertytype.as_view(), name="insert_property_type"),
+
+
+    path('insert/auction', InsertAuction.as_view(), name='insert_auction'),
+
+    path('images/', ImagesListView.as_view(), name='images'),
+    path('image/create/', ImageCreateView.as_view(), name='image_create'),
+    path('image/update/<pk>/', ImageUpdateView.as_view(), name='image_update'),
+    path('image/delete/<pk>/', ImageDeleteView.as_view(), name='image_delete'),
+    path('image/<pk>/', ImageDetailView.as_view(), name='image'),
+
+    path('upadte/auction/<pk>', UpdateAuction.as_view(), name='update_auction'),
+    path('delete/auction/<pk>', DeleteAuction.as_view(), name="delete_auction"),
+
+    path('accounts/signup/', SignUpView.as_view(), name='signup'),
+    path('accounts/logout/', user_logout, name='logout'),
+    path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -7,6 +7,8 @@ import time
 
 import datetime
 
+import pytz
+
 class Cities(Model):
     name = CharField(max_length=20, null=False)
 
@@ -66,6 +68,7 @@ class House(Model):
     property_type = ForeignKey(HouseType, null=True, blank=True, on_delete=SET_NULL, related_name='houses')
     plot_area = IntegerField(null=True, blank=True)
     garden_area = IntegerField(null=True, blank=True)
+    description = TextField(null=False, blank=True)
 
     class Meta:
         ordering = ['name']
@@ -81,6 +84,7 @@ class Ground(Model):
     name = CharField(max_length=150)
     property_type = ForeignKey(GroundType, null=True, blank=True, on_delete=SET_NULL, related_name='grounds')
     property_area = IntegerField(null=False)
+    description = TextField(null=False, blank=True)
 
     class Meta:
         ordering = ['name']
@@ -96,6 +100,7 @@ class Apartment(Model):
     name = CharField(max_length=150, null=False)
     property_type = ForeignKey(ApartmentType, null=True, blank=True, on_delete=SET_NULL, related_name='apartments')
     area = IntegerField(null=False)
+    description = TextField(null=False, blank=True)
 
     class Meta:
         ordering = ['name']
@@ -124,11 +129,12 @@ class PropertyType(Model):
 class Auction(Model):
     property_type = ForeignKey(PropertyType, null=True, blank=True, on_delete=SET_NULL, related_name='auction')
     city = ForeignKey(Cities, null=True, blank=True, on_delete=SET_NULL, related_name='city')
-    address = CharField(max_length=50, null=False)
+    location = CharField(max_length=50, null=False)
     estimate_value = IntegerField(null=False)
     auction_assurance = IntegerField(null=False)
     min_bid = IntegerField(null=False)
     date_auction = DateTimeField(null=False)
+    description = TextField(null=False, blank=True)
 
     STATUS_CHOICES = [
         ('upcoming', 'Upcoming'),
@@ -144,27 +150,24 @@ class Auction(Model):
 
 
     def time_to(self):
-        #date_auction = "10-20-2024 15:30"
-        year = self.date_auction.year
-        month = self.date_auction.month
-        day = self.date_auction.day
-        hour = self.date_auction.hour
-        minute = self.date_auction.minute
-        #subjects = [month, day, hour, minute]
-        #print(year, month, day, hour, minute)
-        then = datetime.datetime(int(year), int(month), int(day), int(hour), int(minute))
-        now = datetime.datetime.now()
+        then = self.date_auction.replace(tzinfo=pytz.utc)
+        now = datetime.datetime.now().replace(tzinfo=pytz.utc)
         time_difference = then - now
         return time_difference
+
+    def is_begin(self):
+        return self.date_auction.replace(tzinfo=pytz.utc) < datetime.datetime.now().replace(tzinfo=pytz.utc)
+    def isnot_begin(self):
+        return self.date_auction.replace(tzinfo=pytz.utc) > datetime.datetime.now().replace(tzinfo=pytz.utc)
 
     class Meta:
         verbose_name_plural = "Auctions"
 
     def __repr__(self):
-        return f"Auction(name={self.address})"
+        return f"Auction(name={self.property_type}, {self.location})"
 
     def __str__(self):
-        return f"{self.property_type}"
+        return f"{self.property_type} ({self.location})"
 
 
 class Bid(Model):
