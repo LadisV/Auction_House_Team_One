@@ -4,26 +4,24 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="currentAuctionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="currentAuctions" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Momentální aukce
           </a>
-          <div class="dropdown-menu" aria-labelledby="currentAuctionDropdown">
+          <div class="dropdown-menu" aria-labelledby="currentAuctions">
             <a class="dropdown-item" href="#">Všechny aukce</a>
             <a class="dropdown-item" href="#">Domy</a>
             <a class="dropdown-item" href="#">Byty</a>
             <a class="dropdown-item" href="#">Pozemky</a>
           </div>
         </li>
-
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="futureAuctionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="futureAuctions" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Budoucí aukce
           </a>
-          <div class="dropdown-menu" aria-labelledby="futureAuctionDropdown">
+          <div class="dropdown-menu" aria-labelledby="futureAuctions">
             <a class="dropdown-item" href="#">Všechny aukce</a>
             <a class="dropdown-item" href="#">Domy</a>
             <a class="dropdown-item" href="#">Byty</a>
@@ -31,27 +29,20 @@
           </div>
         </li>
       </ul>
-
       <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="#">{{ user.username }}</a>
           </li>
           <li class="nav-item">
-            <form method="POST" action="{% url 'logout' %}">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-link nav-link" style="padding: 0;">Odhlásit se</button>
-            </form>
+            <a class="nav-link" href="{% url 'logout' %}">Odhlásit se</a>
           </li>
         {% else %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="authDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Přihlášení/Registrace
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="authDropdown">
-              <a class="dropdown-item" href="{% url 'login' %}">Přihlásit se</a>
-              <a class="dropdown-item" href="{% url 'register' %}">Registrovat</a>
-            </div>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Přihlásit se</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Registrovat</a>
           </li>
         {% endif %}
       </ul>
