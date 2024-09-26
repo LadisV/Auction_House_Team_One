@@ -1,30 +1,33 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-}
-
 .navbar {
-    margin-bottom: 20px;
+    background-color: #0ec638;
 }
 
-.container {
-    margin-top: 20px;
-}
-
-h2 {
+.navbar .navbar-brand {
+    font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 20px;
+    color: white;
 }
 
-.dropdown-menu {
-    min-width: 150px;
+.navbar .navbar-nav {
+    flex-grow: 1;
 }
 
-.btn {
-    margin-bottom: 15px;
+.navbar .navbar-nav.ml-auto .nav-link {
+    color: white;
 }
 
-.col-md-8, .col-md-4 {
-    margin-bottom: 20px;
+.navbar .navbar-nav .nav-link {
+    color: white;
+}
+
+.navbar .dropdown-menu {
+    background-color: #28a745;
+}
+
+.navbar .dropdown-item {
+    color: white;
+}
+
+.navbar .dropdown-item:hover {
+    background-color: #218838;
 }

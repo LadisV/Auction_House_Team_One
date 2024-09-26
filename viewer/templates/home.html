@@ -1,46 +1,4 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-8">
-            <h2>Momentální aukce</h2>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="currentAuctionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Všechny aukce
-                </button>
-                <div class="dropdown-menu" aria-labelledby="currentAuctionsDropdown">
-                    <a class="dropdown-item" href="#">Domy</a>
-                    <a class="dropdown-item" href="#">Byty</a>
-                    <a class="dropdown-item" href="#">Pozemky</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <h2>Budoucí aukce</h2>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="futureAuctionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Všechny aukce
-                </button>
-                <div class="dropdown-menu" aria-labelledby="futureAuctionsDropdown">
-                    <a class="dropdown-item" href="#">Domy</a>
-                    <a class="dropdown-item" href="#">Byty</a>
-                    <a class="dropdown-item" href="#">Pozemky</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 text-right">
-            <h2>Přihlášení/Registrace</h2>
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="authDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Přihlášení/Registrace
-                </button>
-                <div class="dropdown-menu" aria-labelledby="authDropdown">
-                    <a class="dropdown-item" href="{% url 'login' %}">Přihlásit se</a>
-                    <a class="dropdown-item" href="{% url 'register' %}">Registrovat</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock %}

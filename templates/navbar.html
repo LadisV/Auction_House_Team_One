@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark">
   <div class="container">
     <a class="navbar-brand" href="/">Dražby nemovitostí</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,22 +6,25 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
+        <!-- Dropdown pro Momentální aukce -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="currentAuctions" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="currentAuctionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Momentální aukce
           </a>
-          <div class="dropdown-menu" aria-labelledby="currentAuctions">
+          <div class="dropdown-menu" aria-labelledby="currentAuctionsDropdown">
             <a class="dropdown-item" href="#">Všechny aukce</a>
             <a class="dropdown-item" href="#">Domy</a>
             <a class="dropdown-item" href="#">Byty</a>
             <a class="dropdown-item" href="#">Pozemky</a>
           </div>
         </li>
+
+        <!-- Dropdown pro Budoucí aukce -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="futureAuctions" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="futureAuctionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Budoucí aukce
           </a>
-          <div class="dropdown-menu" aria-labelledby="futureAuctions">
+          <div class="dropdown-menu" aria-labelledby="futureAuctionsDropdown">
             <a class="dropdown-item" href="#">Všechny aukce</a>
             <a class="dropdown-item" href="#">Domy</a>
             <a class="dropdown-item" href="#">Byty</a>
@@ -29,6 +32,8 @@
           </div>
         </li>
       </ul>
+
+      <!-- Přihlášení a registrace vpravo -->
       <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}
           <li class="nav-item">
