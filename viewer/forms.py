@@ -1,7 +1,11 @@
 from django.forms import Form, CharField, ModelChoiceField, IntegerField, DateField, ModelForm, NumberInput
 
-from viewer.models import HouseType, GroundType, ApartmentType, Cities, PropertyType, House, Ground, Apartment, Auction, \
+from viewer.models import House, HouseType, GroundType, ApartmentType, Cities, PropertyType, House, Ground, Apartment, Auction, \
     Image
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 
 
 class HouseModelForm(ModelForm):
@@ -35,3 +39,10 @@ class ImageModelForm(ModelForm):
     class Meta:
         model = Image
         fields = '__all__'
+
+class UserRegisterForm(UserCreationForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']

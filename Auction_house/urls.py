@@ -16,11 +16,17 @@ Including another URLconf
 """
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from Auction_house import settings
+from accounts.views import user_logout, SignUpView
 from viewer.views import home, GroundsListView, ground, HousesListView, house, \
-    ApartmentsListView, apartment, AuctionsListView, auction
+    ApartmentsListView, apartment, AuctionsListView, auction, insert_data, DeleteAuction, UpdateAuction, \
+    ImageDetailView, ImageDeleteView, ImageUpdateView, ImagesListView, InsertAuction, InsertPropertytype, DeleteGrounds, \
+    UpdateGrounds, InsertGrounds, DeleteApartments, UpdateApartments, InsertApartments, DeleteHouse, UpdateHouse, \
+    InsertHouse, ImageCreateView
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +34,8 @@ urlpatterns = [
     path('', include('viewer.urls')),
 
     path('', home, name='home'),
+
+    path('insert/', insert_data, name="insert_data"),
 
     path('houses/', HousesListView.as_view(), name='houses'),
     path('house/<pk>/', house, name='house'),

@@ -1,15 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
   <div class="container">
     <a class="navbar-brand" href="/">Dražby nemovitostí</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
-        <!-- Dropdown pro Momentální aukce -->
+        <!-- Dropdown for Aktuální aukce -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="currentAuctionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Momentální aukce
+            Aktuální aukce
           </a>
           <div class="dropdown-menu" aria-labelledby="currentAuctionsDropdown">
             <a class="dropdown-item" href="#">Všechny aukce</a>
@@ -19,7 +20,7 @@
           </div>
         </li>
 
-        <!-- Dropdown pro Budoucí aukce -->
+        <!-- Dropdown for Budoucí aukce -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="futureAuctionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Budoucí aukce
@@ -33,14 +34,25 @@
         </li>
       </ul>
 
-      <!-- Přihlášení a registrace vpravo -->
+      <!-- Button to trigger the modal for inserting auction -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <button type="button" class="btn btn-outline-light" data-toggle="modal" data-target="#insertAuctionModal">
+            Vložit aukci
+          </button>
+        </li>
+      </ul>
+
       <ul class="navbar-nav ml-auto">
         {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="#">{{ user.username }}</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">Odhlásit se</a>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ user.username }}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+              <a class="dropdown-item" href="#">Můj účet</a>
+              <a class="dropdown-item" href="{% url 'logout' %}">Odhlásit se</a>
+            </div>
           </li>
         {% else %}
           <li class="nav-item">
@@ -54,3 +66,24 @@
     </div>
   </div>
 </nav>
+
+<div class="modal fade" id="insertAuctionModal" tabindex="-1" role="dialog" aria-labelledby="insertAuctionModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="insertAuctionModalLabel">Vložit aukci</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Formulář pro vložení aukce -->
+        <form method="POST" action="{% url 'insert_auction' %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary">Vložit Aukci</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

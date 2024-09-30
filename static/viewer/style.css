@@ -5,11 +5,11 @@
 .navbar .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
-    color: white;
+    color: #009080;
 }
 
-.navbar .navbar-nav {
-    flex-grow: 1;
+.navbar .navbar-brand {
+    color: #009080 !important;
 }
 
 .navbar .navbar-nav.ml-auto .nav-link {
@@ -20,14 +20,91 @@
     color: white;
 }
 
+/* Barva pozadí a ohraničení pro dropdown */
 .navbar .dropdown-menu {
     background-color: #28a745;
+    border-color: #28a745;
+    right: 0;
+    left: auto;
 }
 
 .navbar .dropdown-item {
     color: white;
 }
 
+/* Zvýraznění prvku při hover efektu */
 .navbar .dropdown-item:hover {
+    background-color: #218838; /* Lehce tmavší zelená */
+    color: white;
+}
+
+.jumbotron {
+    background-color: #64ec51;
+    padding: 2rem 1rem;
+    border-radius: 0.3rem;
+    text-align: center;
+}
+
+.navbar-nav .nav-item .nav-link {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+/* Základní styl pro dropdown */
+.nav-item .dropdown-menu {
+    background-color: #f8f9fa;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Zvýraznění aktivního prvku v dropdownu při hoveru */
+.dropdown-menu .dropdown-item:hover {
+    background-color: #0ec638; /* Světle zelená */
+    color: white;
+}
+
+/* Tlačítko pro vložení aukce */
+.navbar .btn {
+    margin-left: 15px;
+}
+
+/* Základní styl pro formuláře */
+form {
+    margin-top: 20px;
+}
+
+form button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #218838; /* Tmavší barva při hover efektu */
+}
+
+.form-control, .from-group label {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    color: #495057;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:hover {
     background-color: #218838;
 }

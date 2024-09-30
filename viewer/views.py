@@ -1,15 +1,18 @@
+import self
+from django.contrib import messages
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.models import User
 from django.db.models import Model, ImageField
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import FormView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.views.generic import TemplateView, ListView, CreateView, DetailView
-
+from .forms import UserRegisterForm
+from viewer.forms import ApartmentModelForm, AuctionModelForm, ImageModelForm, PropertyTypeModelForm, GroundModelForm, \
+    HouseModelForm
 from viewer.models import House, Apartment, Ground, Auction, Image
-#from viewer.forms import ImageModelForm
-
+from viewer.forms import ImageModelForm
 from logging import getLogger
 
 LOGGER = getLogger()
@@ -23,6 +26,9 @@ def home(request):
         'current_auctions': current_auctions,
         'future_auctions': future_auctions
     }
+
+    return render(request, 'home.html', context)
+
 
 def houses(request):
     houses_ = House.objects.all()
@@ -269,13 +275,14 @@ def register(request):
             username = form.cleaned_data.get('username')
             if User.objects.filter(username=username).exists():
                 messages.error(request, 'Toto uživatelské jméno již existuje, zvolte prosím jiné.')
-                return redirect('register')  # Zpět na stránku registrace
-            form.save()
-            messages.success(request, f'Váš účet byl vytvořen, {username}! Nyní se můžete přihlásit.')
-            return redirect('login')
+            else:
+                form.save()
+                messages.success(request, f'Váš účet byl vytvořen, {username}! Nyní se můžete přihlásit.')
+                return redirect('login')
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
 
 
     def form_invalid(self, form):
@@ -313,3 +320,12 @@ class ImagesListView(ListView):
     template_name = "images.html"
     model = Image
     context_object_name = 'images'
+
+
+class ImageCreateView(CreateView):
+    template_name = 'form_image.html'
+    form_class = ImageModelForm
+    model = Image
+
+    def success_url(self):
+        reverse_lazy('image_detail', kwargs={'pk': self.object.pk})
