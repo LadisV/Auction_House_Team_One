@@ -9,6 +9,9 @@ import datetime
 
 import pytz
 
+from accounts.models import Profile
+
+
 class Cities(Model):
     name = CharField(max_length=20, null=False)
 
@@ -150,15 +153,56 @@ class Auction(Model):
 
 
     def time_to(self):
-        then = self.date_auction.replace(tzinfo=pytz.utc)
-        now = datetime.datetime.now().replace(tzinfo=pytz.utc)
-        time_difference = then - now
-        return time_difference
+            then = self.date_auction.replace(tzinfo=pytz.utc)
+            now = datetime.datetime.now().replace(tzinfo=pytz.utc)
+            time_diference = then - now
+            return time_diference
 
-    def is_begin(self):
-        return self.date_auction.replace(tzinfo=pytz.utc) < datetime.datetime.now().replace(tzinfo=pytz.utc)
-    def isnot_begin(self):
-        return self.date_auction.replace(tzinfo=pytz.utc) > datetime.datetime.now().replace(tzinfo=pytz.utc)
+
+    def time_of(self):
+        now = datetime.datetime.now().replace(tzinfo=pytz.utc)
+        then = self.date_end_auction.replace(tzinfo=pytz.utc)
+        result = then - now
+        if now < then:
+            return result
+        else:
+            return "Konec"
+
+    def diference(self):
+        now = datetime.datetime.now().replace(tzinfo=pytz.utc)
+        then = self.date_end_auction.replace(tzinfo=pytz.utc)
+        result = then - now
+        if now < then:
+            return result
+        else:
+            return "Konec"
+
+
+    def in_progress(self):
+        začátek_aukce = self.date_auction.replace(tzinfo=pytz.utc)
+        aktuální_čas = datetime.datetime.now().replace(tzinfo=pytz.utc)
+        konec_aukce = self.date_end_auction.replace(tzinfo=pytz.utc)
+        if aktuální_čas > začátek_aukce and aktuální_čas < konec_aukce:
+            return True
+        else:
+            return False
+
+    def isnot_start(self):
+        začátek_aukce = self.date_auction.replace(tzinfo=pytz.utc)
+        aktuální_čas = datetime.datetime.now().replace(tzinfo=pytz.utc)
+        if aktuální_čas < začátek_aukce:
+            return True
+        else:
+            return False
+
+    def end(self):
+        aktuální_čas = datetime.datetime.now().replace(tzinfo=pytz.utc)
+        konec_aukce = self.date_end_auction.replace(tzinfo=pytz.utc)
+        if aktuální_čas > konec_aukce:
+            return True
+        else:
+            return False
+
 
     class Meta:
         verbose_name_plural = "Auctions"
@@ -171,7 +215,8 @@ class Auction(Model):
 
 
 class Bid(Model):
-    auction = ForeignKey(Auction, null=True, blank=True, on_delete=models.CASCADE)
+    auction = ForeignKey(Auction, null=True, blank=True, on_delete=models.CASCADE, related_name='bid')
+    user = ForeignKey(Profile, null=True, blank=True, on_delete=SET_NULL, related_name='bid')
     bidder_name = CharField(max_length=255)
     bid_amount = IntegerField(null=False)
     bid_date = DateTimeField(auto_now_add=True)
@@ -181,7 +226,7 @@ class Bid(Model):
 
     def anonymizovat_jmeno(self):
         if len(self.bidder_name) <= 2:
-            return self.bidder_name  # pokud je nickname příliš krátký, vrať ho celý
+            return self.bidder_name
         else:
             return self.bidder_name[0] + '*' * (len(self.bidder_name) - 2) + self.bidder_name[-1]
 

@@ -19,6 +19,13 @@ from django.contrib import admin
 from django.urls import path, include
 
 from Auction_house import settings
+
+from accounts.views import SignUpView, user_logout
+
+from viewer.views import home, InsertHouse, ApartmentsListView, apartment, AuctionsListView, ImageCreateView, \
+    ImageDetailView, insert_data, InsertApartments, InsertGrounds, InsertAuction, HousesListView, house, \
+    GroundsListView, ground, UpdateHouse, DeleteHouse, UpdateApartments, DeleteApartments, UpdateGrounds, DeleteGrounds, \
+    UpdateAuction, DeleteAuction, ImageUpdateView, ImageDeleteView, InsertPropertyType, InsertBid, AuctionTemplateView
 from accounts.views import user_logout, SignUpView
 from viewer.views import home, GroundsListView, ground, HousesListView, house, \
     ApartmentsListView, apartment, AuctionsListView, auction, insert_data, DeleteAuction, UpdateAuction, \
@@ -42,13 +49,9 @@ urlpatterns = [
 
     path('apartments/', ApartmentsListView.as_view(), name='apartments'),
     path('apartment/<pk>/', apartment, name='apartment'),
+    path('image/create', ImageCreateView.as_view(), name='image_create'),
 
-    path('grounds/', GroundsListView.as_view(), name='grounds'),
-    path('ground/<pk>/', ground, name='ground'),
-
-    path('auctions/', AuctionsListView.as_view(), name='auctions'),
-    path('auction/<pk>/', auction, name='auction'),
-
+    path('insert/bid', InsertBid.as_view(), name='insert_bid'),
 
     path('insert/', insert_data, name="insert_data"),
 
@@ -57,23 +60,34 @@ urlpatterns = [
     path('update/houses/<pk>', UpdateHouse.as_view(), name="update_houses"),
     path('delete/houses/<pk>', DeleteHouse.as_view(), name="delete_houses"),
 
+    path('houses/', HousesListView.as_view(), name='houses'),
+    path('house/<pk>/', house, name='house'),
+
 
     path('insert/apartments', InsertApartments.as_view(), name="insert_apartments"),
     path('update/apartments/<pk>', UpdateApartments.as_view(), name="update_apartments"),
     path('delete/apartments/<pk>', DeleteApartments.as_view(), name="delete_apartments"),
+
+    path('apartments/', ApartmentsListView.as_view(), name='apartments'),
+    path('apartment/<pk>/', apartment, name='apartment'),
 
 
     path('insert/grounds', InsertGrounds.as_view(), name="insert_grounds"),
     path('update/grounds/<pk>', UpdateGrounds.as_view(), name="update_grounds"),
     path('delete/grounds/<pk>', DeleteGrounds.as_view(), name="delete_grounds"),
 
+    path('grounds/', GroundsListView.as_view(), name='grounds'),
+    path('ground/<pk>/', ground, name='ground'),
 
-    path('insert/property_type', InsertPropertytype.as_view(), name="insert_property_type"),
-
+    path('insert/property_type', InsertPropertyType.as_view(), name="insert_property_type"),
 
     path('insert/auction', InsertAuction.as_view(), name='insert_auction'),
+    path('upadte/auction/<pk>', UpdateAuction.as_view(), name='update_auction'),
+    path('delete/auction/<pk>', DeleteAuction.as_view(), name="delete_auction"),
+    path('auctions/', AuctionsListView.as_view(), name='auctions'),
+    path('auction/<pk>/', AuctionTemplateView.as_view(), name='auction'),
 
-    path('images/', ImagesListView.as_view(), name='images'),
+    path('images/', ImageDetailView.as_view(), name='images'),
     path('image/create/', ImageCreateView.as_view(), name='image_create'),
     path('image/update/<pk>/', ImageUpdateView.as_view(), name='image_update'),
     path('image/delete/<pk>/', ImageDeleteView.as_view(), name='image_delete'),

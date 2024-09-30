@@ -6,6 +6,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+from viewer.models import HouseType, GroundType, ApartmentType, Cities, PropertyType, House, Ground, Apartment, Auction, \
+    Image, Bid
 
 
 class HouseModelForm(ModelForm):
@@ -39,6 +41,13 @@ class ImageModelForm(ModelForm):
     class Meta:
         model = Image
         fields = '__all__'
+
+
+class BidModelForm(ModelForm):
+    class Meta:
+        model = Bid
+        fields = ['bid_amount']
+
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()

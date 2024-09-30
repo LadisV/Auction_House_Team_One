@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+
 <h1>{{ auction.property_type }}</h1>
 <div class="auction-details">
     <div class="auction-property_type">
@@ -27,16 +29,60 @@
         <strong>Datum dražby:</strong>
             {{ auction.date_auction|date:"d.m.Y H:i" }}
     </div>
+<table>
+    <tr>
+        <td>
+            <div>
+                <strong>Aktuální čas:   </strong>
+            </div>
+        </td>
+        <td>
+             <div class="auction-local_time" id="clock">
 
-    <div class="auction-local_time">
-        <strong>Aktuální čas:</strong>
-            {{ auction.loc_time }}
-    </div>
+        <script>
+        function updateClock() {
+            // Získání aktuálního času
+            const now = new Date();
 
-    <div class="auction-time_to">
-        <strong>Zbývající čas do dražby:</strong>
-            {{ auction.time_to }}
+            // Formátování času
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            // Složení času do formátu HH:MM:SS
+            const currentTime = `${hours}:${minutes}:${seconds}`;
+
+            // Zobrazení času na stránce
+            document.getElementById('clock').textContent = currentTime;
+        }
+
+        // Aktualizace času každou sekundu
+        setInterval(updateClock, 1000);
+
+        // První volání funkce, aby se čas zobrazil ihned při načtení stránky
+        updateClock();
+
+        </script>
     </div>
+        </td>
+
+    </tr>
+
+</table>
+
+    {% if auction.isnot_start %}
+        <div class="auction-time_to">
+            <strong>Zbývající čas do dražby:</strong>
+                {{ auction.time_to }}
+        </div>
+    {% endif %}
+    {% if auction.in_progress %}
+        <div class="auction-time_of">
+            <strong>Datum konce dražby:</strong>
+            {{auction.date_end_auction }}
+
+        </div>
+    {% endif %}
 </div>
 
 <div class="auction-description">
@@ -45,14 +91,13 @@
 </div>
 
 <div>
-        {% if auction.isnot_begin %}
-            <strong>Aukce začne za</strong>  {{ auction.time_to }}
-        {% endif %}
-        {% if auction.is_begin %}
-            Začátek aukce
-            <strong>Největší příhoz:</strong>
-        {% endif %}
 </div>
+<div>
+        {% if auction.in_progress %}
+            <strong>Poslední příhoz: </strong>
+                    {{ bid.bidder_name }}
+        {% endif %}
+
 <div>
     <strong>Fotogalerie:</strong>
 </div>
@@ -62,5 +107,39 @@
             <img src="{{  image.image.url }}" alt="{{  image.description }}" width="150px">
         </span>
     {% endfor %}
+</div>
+<div>
+    {% if auction.in_progress %}
+        <form method="post">
+            {% csrf_token %}
+            <table>{{ form.as_table }}</table>
+            <input id="id_submit" type="submit" value="Přihodit" class="btn btn-primary">
+        </form>
+    {% endif %}
+</div>
+<div>
+        {% if auction.end and Bid.bid_date.exists %}
+            <strong>Prodáno </strong>
+
+        {% endif %}
+</div>
+<div>
+        <div class="auction-bids">
+            {% for bid in auction.bid.all %}
+                <div class="auction-bid bg-light rounded mt-2 p-2 position-relative">
+                    <div class="auction-bid-user-box">
+                        <span class="auction-bid-user">
+                            Uživatel: {{ bid.user }}
+                        </span>
+                        <span class="auction-bid-created font-italic text-secondary">
+                            {{ bid.created|date:'d. m. Y H:i' }}
+                        </span>
+                    </div>
+                    <div class="auction-bid-amount">
+                        Příhoz: {{ bid.bid_amount }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
 </div>
 {% endblock %}

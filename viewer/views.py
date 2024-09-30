@@ -1,5 +1,9 @@
 import self
 from django.contrib import messages
+from datetime import datetime, tzinfo
+from lib2to3.fixes.fix_input import context
+
+import pytz
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Model, ImageField
@@ -11,6 +15,13 @@ from django.views.generic import TemplateView, ListView, CreateView, DetailView
 from .forms import UserRegisterForm
 from viewer.forms import ApartmentModelForm, AuctionModelForm, ImageModelForm, PropertyTypeModelForm, GroundModelForm, \
     HouseModelForm
+
+from accounts.models import Profile
+from viewer.forms import ImageModelForm, BidModelForm
+from viewer.models import House, Apartment, Ground, Auction, Image, Bid
+#from viewer.forms import ImageModelForm
+from viewer.forms import ImageModelForm, ApartmentModelForm, GroundModelForm, HouseModelForm, AuctionModelForm, PropertyTypeModelForm
+
 from viewer.models import House, Apartment, Ground, Auction, Image
 from viewer.forms import ImageModelForm
 from logging import getLogger
@@ -180,6 +191,15 @@ class DeleteAuction(DeleteView):
     model = Auction
     success_url = reverse_lazy('auctions')
 
+class InsertBid(CreateView):
+    template_name = "auction.html"
+    form_class = BidModelForm
+    success_url = reverse_lazy('auction')
+
+    def form_invalid(self, form):
+        LOGGER.warning('User providet invalit data updating.')
+        return super().form_invalid(form)
+
 def apartment(request, pk):
     if Apartment.objects.filter(id=pk).exists():
         apartment_ = Apartment.objects.get(id=pk)
@@ -289,8 +309,6 @@ def register(request):
         LOGGER.warning('User provided invalid data.')
         return super().form_invalid(form)
 
-def login(request):
-    return render(request, 'login.html')
 
 class ImageUpdateView(PermissionRequiredMixin, UpdateView):
     template_name = 'form_image.html'
