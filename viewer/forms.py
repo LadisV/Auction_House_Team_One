@@ -1,4 +1,5 @@
 from django.forms import Form, CharField, ModelChoiceField, IntegerField, DateField, ModelForm, NumberInput
+from django.views.generic import CreateView
 
 from viewer.models import House, HouseType, GroundType, ApartmentType, Cities, PropertyType, House, Ground, Apartment, Auction, \
     Image
@@ -55,3 +56,9 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']
+
+class InsertPropertyType(CreateView):
+    model = PropertyType
+    template_name = 'insert_property_type.html'
+    fields = '__all__'
+    success_url = '/'

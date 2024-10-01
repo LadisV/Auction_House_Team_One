@@ -21,11 +21,12 @@ from django.urls import path, include
 from Auction_house import settings
 
 from accounts.views import SignUpView, user_logout
+from viewer.forms import InsertPropertyType
 
 from viewer.views import home, InsertHouse, ApartmentsListView, apartment, AuctionsListView, ImageCreateView, \
     ImageDetailView, insert_data, InsertApartments, InsertGrounds, InsertAuction, HousesListView, house, \
     GroundsListView, ground, UpdateHouse, DeleteHouse, UpdateApartments, DeleteApartments, UpdateGrounds, DeleteGrounds, \
-    UpdateAuction, DeleteAuction, ImageUpdateView, ImageDeleteView, InsertPropertyType, InsertBid, AuctionTemplateView
+    UpdateAuction, DeleteAuction, ImageUpdateView, ImageDeleteView, InsertBid, AuctionTemplateView
 from accounts.views import user_logout, SignUpView
 from viewer.views import home, GroundsListView, ground, HousesListView, house, \
     ApartmentsListView, apartment, AuctionsListView, auction, insert_data, DeleteAuction, UpdateAuction, \

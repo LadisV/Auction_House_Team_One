@@ -18,7 +18,7 @@ from viewer.forms import ApartmentModelForm, AuctionModelForm, ImageModelForm, P
 
 from accounts.models import Profile
 from viewer.forms import ImageModelForm, BidModelForm
-from viewer.models import House, Apartment, Ground, Auction, Image, Bid
+from viewer.models import House, Apartment, Ground, Auction, Image, Bid, PropertyType
 #from viewer.forms import ImageModelForm
 from viewer.forms import ImageModelForm, ApartmentModelForm, GroundModelForm, HouseModelForm, AuctionModelForm, PropertyTypeModelForm
 
@@ -287,6 +287,8 @@ class AuctionsListView(ListView):
     model = Auction
     context_object_name = 'auctions'
 
+class AuctionTemplateView(TemplateView):
+    template_name = 'auction.html'
 
 def register(request):
     if request.method == 'POST':
@@ -347,3 +349,10 @@ class ImageCreateView(CreateView):
 
     def success_url(self):
         reverse_lazy('image_detail', kwargs={'pk': self.object.pk})
+
+
+class InsertPropertyType(CreateView):
+    model = PropertyType
+    template_name = 'insert_property_type.html'
+    fields = '__all__'
+    success_url = '/'
