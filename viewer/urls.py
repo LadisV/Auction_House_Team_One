@@ -13,5 +13,5 @@ urlpatterns = [
     path('auctions/', views.auctions, name='auctions'),
     path('insert_auction/', InsertAuction.as_view(), name='insert_auction'),
     path('insert_property_type/', InsertPropertyType.as_view(), name='insert_property_type'),
-
+    path('auction/<int:pk>/', views.auction_detail, name='auction_detail'),
 ]

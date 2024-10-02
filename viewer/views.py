@@ -7,11 +7,13 @@ import pytz
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.models import User
 from django.db.models import Model, ImageField
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import FormView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.views.generic import TemplateView, ListView, CreateView, DetailView
+
+from . import models
 from .forms import UserRegisterForm
 from viewer.forms import ApartmentModelForm, AuctionModelForm, ImageModelForm, PropertyTypeModelForm, GroundModelForm, \
     HouseModelForm
@@ -25,19 +27,16 @@ from viewer.forms import ImageModelForm, ApartmentModelForm, GroundModelForm, Ho
 from viewer.models import House, Apartment, Ground, Auction, Image
 from viewer.forms import ImageModelForm
 from logging import getLogger
+from .forms import ApartmentModelForm
 
 LOGGER = getLogger()
 
 
 def home(request):
-    current_auctions = Auction.objects.filter(status='current')
-    future_auctions = Auction.objects.filter(status='future')
-
+    auctions = Auction.objects.all()
     context = {
-        'current_auctions': current_auctions,
-        'future_auctions': future_auctions
+        'auctions': auctions
     }
-
     return render(request, 'home.html', context)
 
 
@@ -290,6 +289,8 @@ class AuctionsListView(ListView):
 class AuctionTemplateView(TemplateView):
     template_name = 'auction.html'
 
+
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -356,3 +357,22 @@ class InsertPropertyType(CreateView):
     template_name = 'insert_property_type.html'
     fields = '__all__'
     success_url = '/'
+
+def insert_auction_view(request):
+    form = AuctionModelForm()
+    if request.method == 'POST':
+        form = AuctionModelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    return render(request, 'insert_auction.html', {'form': form})
+
+
+def auction_detail(request, pk):
+    auction = get_object_or_404(Auction, pk=pk)
+
+    context = {
+        'auction': auction
+    }
+
+    return render(request, 'auction_detail.html', context)

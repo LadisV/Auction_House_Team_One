@@ -1,27 +1,47 @@
 {% extends 'base.html' %}
+
+{% load static %}
+
 {% block content %}
 
-  <button type="button" class="btn btn-outline-light" data-toggle="modal" data-target="#insertAuctionModal">
-    Vložit aukci
-  </button>
-
-  <div class="modal fade" id="insertAuctionModal" tabindex="-1" role="dialog" aria-labelledby="insertAuctionModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="insertAuctionModalLabel">Vložit aukci</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form method="POST" action="{% url 'insert_auction' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Vložit Aukci</button>
-          </form>
+  <!-- Carousel (Posuvné obrázky) -->
+  <div id="auctionCarousel" class="carousel slide mt-4" data-ride="carousel">
+  <div class="carousel-inner">
+    {% for auction in auctions %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <img src="{{ auction.image.url }}" class="d-block w-100" alt="{{ auction.title }}">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>{{ auction.title }}</h5>
+          <p>{{ auction.description }}</p>
         </div>
       </div>
+    {% endfor %}
+  </div>
+  <a class="carousel-control-prev" href="#auctionCarousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Předchozí</span>
+  </a>
+  <a class="carousel-control-next" href="#auctionCarousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Další</span>
+  </a>
+</div>
+
+  <!-- Karty s aukcemi -->
+  <div class="container mt-5">
+    <div class="row">
+      {% for auction in auctions %}
+      <div class="col-md-4">
+        <div class="card mb-4">
+          <img src="{{ auction.image.url }}" class="card-img-top" alt="Obrázek aukce">
+          <div class="card-body">
+            <h5 class="card-title">{{ auction.title }}</h5>
+            <p class="card-text">{{ auction.description|truncatewords:15 }}</p>
+            <a href="{% url 'auction_detail' auction.id %}" class="btn btn-primary">Detail aukce</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
     </div>
   </div>
 

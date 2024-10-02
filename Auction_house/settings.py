@@ -15,6 +15,7 @@ from pathlib import Path
 from django.conf.urls import static
 import os
 
+from django.template.context_processors import media
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -140,8 +141,8 @@ GRAPH_MODELS = {
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-MEDIA_ROOT = BASE_DIR  #os.path.join(BASE_DIR, 'files')
-MEDIA_URL = 'images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 
 

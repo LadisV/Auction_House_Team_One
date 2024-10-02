@@ -25,24 +25,17 @@
         }
     </style>
   </head>
-  <body>
-    <script>
-  $(document).ready(function(){
-    console.log("jQuery is working correctly!");
-  });
-</script>
-  </body>
-</html>
-
 
   <body>
     {% include 'navbar.html' %}
 
-    <div class="container">
-      <div class="jumbotron">
-        {% block content %}{% endblock %}
-      </div>
+    <!-- Container for dynamic content -->
+    <div class="container mt-4">
+      {% block content %}
+      <!-- Dynamický obsah vložený zde -->
+      {% endblock %}
     </div>
+
     {% include 'footer.html' %}
 
     <script>
@@ -66,4 +59,5 @@
       })();
     </script>
   </body>
+</html>
 </html>
