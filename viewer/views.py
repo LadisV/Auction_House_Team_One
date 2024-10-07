@@ -1,44 +1,31 @@
-import self
-from django.contrib import messages
 from datetime import datetime, tzinfo
 from lib2to3.fixes.fix_input import context
 
 import pytz
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.contrib.auth.models import User
 from django.db.models import Model, ImageField
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from django.urls import reverse_lazy
 from django.views.generic import FormView, CreateView, UpdateView, DeleteView
 from django.views import View
 from django.views.generic import TemplateView, ListView, CreateView, DetailView
-from .forms import UserRegisterForm
-from viewer.forms import ApartmentModelForm, AuctionModelForm, ImageModelForm, PropertyTypeModelForm, GroundModelForm, \
-    HouseModelForm
 
 from accounts.models import Profile
 from viewer.forms import ImageModelForm, BidModelForm
-from viewer.models import House, Apartment, Ground, Auction, Image, Bid, PropertyType
+from viewer.models import House, Apartment, Ground, Auction, Image, Bid
 #from viewer.forms import ImageModelForm
 from viewer.forms import ImageModelForm, ApartmentModelForm, GroundModelForm, HouseModelForm, AuctionModelForm, PropertyTypeModelForm
 
 from viewer.models import House, Apartment, Ground, Auction, Image
-from viewer.forms import ImageModelForm
+
 from logging import getLogger
 
 LOGGER = getLogger()
 
 
 def home(request):
-    current_auctions = Auction.objects.filter(status='current')
-    future_auctions = Auction.objects.filter(status='future')
-
-    context = {
-        'current_auctions': current_auctions,
-        'future_auctions': future_auctions
-    }
-
-    return render(request, 'home.html', context)
+    return render(request, "home.html")
 
 
 def houses(request):
@@ -70,11 +57,6 @@ class HousesListView(ListView):
     template_name = "houses.html"
     model = House
     context_object_name = 'houses'
-
-def apartments(request):
-    apartments_ = Apartment.objects.all()
-    context = {'apartments': apartments_}
-    return render(request, 'apartments.html', context)
 
 
 def insert_data(request):
@@ -157,7 +139,7 @@ class DeleteGrounds(DeleteView):
     success_url = reverse_lazy('grounds')
 
 
-class InsertPropertytype(CreateView):
+class InsertPropertyType(CreateView):
     template_name = "form.html"
     form_class = PropertyTypeModelForm
     success_url = reverse_lazy('insert_auction')
@@ -170,7 +152,7 @@ class InsertPropertytype(CreateView):
 class InsertAuction(CreateView):
     template_name = "form.html"
     form_class = AuctionModelForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('image_create')
 
     def form_invalid(self, form):
         LOGGER.warning('User providet invalit data updating.')
@@ -187,7 +169,7 @@ class UpdateAuction(UpdateView):
         return super().form_invalid(form)
 
 class DeleteAuction(DeleteView):
-    template_name = 'creator_confirm_delete.html'
+    template_name = 'confirm_delete.html'
     model = Auction
     success_url = reverse_lazy('auctions')
 
@@ -207,6 +189,10 @@ def apartment(request, pk):
         return render(request, 'apartment.html', context)
     return grounds(request)
 
+def apartments(request):
+    apartments_ = Apartment.objects.all()
+    context = {'apartments': apartments_}
+    return render(request, 'apartments.html', context)
 
 class ApartmentsView(View):
     def get(self, request):
@@ -262,13 +248,47 @@ def auctions(request):
     context = {'auctions': auctions_}
     return render(request, 'auctions.html', context)
 
-def auction(request, pk):
+"""def auction(request, pk):
     if Auction.objects.filter(id=pk).exists():
         auction_ = Auction.objects.get(id=pk)
-        context = {'auction': auction_}
+        form = BidModelForm
+        context = {'auction': auction_, 'form': form}
         return render(request, 'auction.html', context)
     return grounds(request)
 
+class AuctionFormView(FormView):
+    template_name = 'auction.html'  # Šablona, která zobrazí formulář
+    form_class = BidModelForm  # Odkaz na náš formulář
+    success_url = reverse_lazy('auction')  # URL, kam bude uživatel přesměrován po úspěšném odeslání formuláře
+
+    def form_valid(self, form):
+        # Zde můžete zpracovat data z formuláře
+        # Například je uložit do databáze nebo odeslat email
+        print(form.cleaned_data)  # Tisk validovaných dat do konzole
+        return super().form_valid(form)"""
+
+
+class AuctionTemplateView(TemplateView):
+    template_name = "auction.html"
+
+    def post(self, request):
+        context_ = self.get_context_data()
+        Bid.objects.create( auction = context_['auction'],
+                            user = Profile.objects.get(user=request.user),
+                            first_name = Profile.objects.get(bidder_name=request.user.first_name),
+                            last_name = Profile.objects.get(bidder_name=request.user.last_name),
+                            bid_amount = request.POST.get('auction.min_bid'),
+                                )
+
+        return render(request, 'auction.html', context_)
+
+    def get_context_data(self, **kwargs):
+        context_= super().get_context_data(**kwargs)
+        pk = self.kwargs['pk']
+        auction_ = Auction.objects.get(id=pk)
+        context_['auction'] = auction_
+        context_['form'] = BidModelForm
+        return context_
 
 class AuctionView(View):
     def get(self, request):
@@ -287,25 +307,12 @@ class AuctionsListView(ListView):
     model = Auction
     context_object_name = 'auctions'
 
-class AuctionTemplateView(TemplateView):
-    template_name = 'auction.html'
 
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            if User.objects.filter(username=username).exists():
-                messages.error(request, 'Toto uživatelské jméno již existuje, zvolte prosím jiné.')
-            else:
-                form.save()
-                messages.success(request, f'Váš účet byl vytvořen, {username}! Nyní se můžete přihlásit.')
-                return redirect('login')
-    else:
-        form = UserRegisterForm()
-    return render(request, 'register.html', {'form': form})
-
-
+class ImageCreateView(PermissionRequiredMixin, CreateView):
+    template_name = 'form_image.html'
+    form_class = ImageModelForm
+    success_url = reverse_lazy('home')
+    permission_required = 'viewer.add_image'
 
     def form_invalid(self, form):
         LOGGER.warning('User provided invalid data.')
@@ -334,25 +341,3 @@ class ImageDeleteView(PermissionRequiredMixin, DeleteView):
 class ImageDetailView(DetailView):
     model = Image
     template_name = 'image.html'
-
-
-class ImagesListView(ListView):
-    template_name = "images.html"
-    model = Image
-    context_object_name = 'images'
-
-
-class ImageCreateView(CreateView):
-    template_name = 'form_image.html'
-    form_class = ImageModelForm
-    model = Image
-
-    def success_url(self):
-        reverse_lazy('image_detail', kwargs={'pk': self.object.pk})
-
-
-class InsertPropertyType(CreateView):
-    model = PropertyType
-    template_name = 'insert_property_type.html'
-    fields = '__all__'
-    success_url = '/'
