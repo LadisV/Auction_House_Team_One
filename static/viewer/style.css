@@ -1,47 +1,39 @@
-/* Nastavení barvy pozadí pro navbar */
 .navbar {
     background-color: #0ec638;
 }
 
-/* Styl pro brand název */
 .navbar .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
     color: #000000 !important;
 }
 
-/* Barva textu pro odkazy v navbaru */
 .navbar .navbar-nav .nav-link {
     color: white !important;
 }
 
-/* Barva pozadí a textu pro dropdown položky po rozbalení */
 .navbar .dropdown-menu {
-    background-color: #28a745 !important; /* Zelené pozadí pro celý dropdown */
+    background-color: #28a745 !important;
     border-color: #28a745 !important;
 }
 
 .navbar .dropdown-item {
-    color: white !important; /* Bílý text pro položky hned po rozbalení */
-}
-
-/* Zvýraznění prvku při hover efektu */
-.navbar .dropdown-item:hover {
-    background-color: #218838 !important; /* Lehce tmavší zelená při hoveru */
     color: white !important;
 }
 
-/* Tlačítko pro vložení aukce */
+.navbar .dropdown-item:hover {
+    background-color: #218838 !important;
+    color: white !important;
+}
+
 .navbar .btn {
     margin-left: 15px;
 }
 
-/* Styl pro formuláře */
 form {
     margin-top: 20px;
 }
 
-/* Styl pro tlačítka */
 form button, button {
     background-color: #28a745;
     color: white;
@@ -51,10 +43,9 @@ form button, button {
 }
 
 form button:hover, button:hover {
-    background-color: #218838; /* Tmavší barva při hover efektu */
+    background-color: #218838;
 }
 
-/* Styl pro formulářová pole */
 .form-control, .from-group label {
     background-color: #ffffff;
     color: #000000;

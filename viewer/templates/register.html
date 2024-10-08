@@ -6,6 +6,7 @@
     <form method="POST" class="needs-validation" novalidate>
       {% csrf_token %}
 
+      <!-- Username -->
       <div class="form-group">
         {{ form.username.label_tag }}
         {{ form.username }}
@@ -16,6 +17,7 @@
         </div>
       </div>
 
+      <!-- Email -->
       <div class="form-group">
         {{ form.email.label_tag }}
         {{ form.email }}
@@ -26,6 +28,40 @@
         </div>
       </div>
 
+      <!-- First name -->
+      <div class="form-group">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        <div class="invalid-feedback">
+          {% for error in form.first_name.errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Last name -->
+      <div class="form-group">
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+        <div class="invalid-feedback">
+          {% for error in form.last_name.errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Date of birth -->
+      <div class="form-group">
+        {{ form.date_of_birth.label_tag }}
+        {{ form.date_of_birth }}
+        <div class="invalid-feedback">
+          {% for error in form.date_of_birth.errors %}
+            {{ error }}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Password -->
       <div class="form-group">
         {{ form.password1.label_tag }}
         {{ form.password1 }}
@@ -36,6 +72,7 @@
         </div>
       </div>
 
+      <!-- Password confirmation -->
       <div class="form-group">
         {{ form.password2.label_tag }}
         {{ form.password2 }}
@@ -46,6 +83,7 @@
         </div>
       </div>
 
+      <!-- General form errors -->
       <div class="form-group">
         {% if form.non_field_errors %}
           <div class="alert alert-danger">
@@ -56,6 +94,7 @@
         {% endif %}
       </div>
 
+      <!-- Submit button -->
       <button type="submit" class="btn btn-primary">Registrovat</button>
     </form>
   </div>

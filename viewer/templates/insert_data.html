@@ -1,14 +1,50 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Vložení dat</h1>
-    <ul>
-        <li><a href="{% url 'insert_houses' %}"> Vložit dům </a></li>
-        <li><a href="{% url 'insert_apartments' %}"> Vložit byt </a></li>
-        <li><a href="{% url 'insert_grounds' %}"> Vložit pozemek </a></li>
-        <li><a href="{% url 'insert_property_type' %}"> Vložit typ pozemku </a></li>
-        <li><a href="{% url 'insert_auction' %}"> Vložit aukce </a></li>
-        <li><a href="{% url 'image_create' %}"> Vložit obrázek </a></li>
-
-    </ul>
+<h1>Vložit aukci</h1>
+<form action="{% url 'insert_auction' %}" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <label for="username">Username:</label>
+    <input type="text" class="form-control" id="username" name="username" required>
+  </div>
+  <div class="form-group">
+    <label for="firstname">Křestní jméno:</label>
+    <input type="text" class="form-control" id="firstname" name="firstname" required>
+  </div>
+  <div class="form-group">
+    <label for="surname">Příjmení:</label>
+    <input type="text" class="form-control" id="surname" name="surname" required>
+  </div>
+  <div class="form-group">
+    <label for="birthdate">Datum narození:</label>
+    <input type="date" class="form-control" id="birthdate" name="birthdate" required>
+  </div>
+  <div class="form-group">
+    <label for="id_type">Typ dokladu:</label>
+    <select class="form-control" id="id_type" name="id_type">
+      <option>Občanský průkaz</option>
+      <option>Řidičský průkaz</option>
+      <option>Pas</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="id_number">Číslo dokladu:</label>
+    <input type="text" class="form-control" id="id_number" name="id_number" required>
+  </div>
+  <div class="form-group">
+    <label for="phone">Mobilní telefon:</label>
+    <input type="text" class="form-control" id="phone" name="phone" required>
+  </div>
+  <div class="form-group">
+    <label for="email">Email address:</label>
+    <input type="email" class="form-control" id="email" name="email" required>
+  </div>
+  <div class="form-group">
+    <label for="password">Password:</label>
+    <input type="password" class="form-control" id="password" name="password" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Vložit Aukci</button>
+</form>
 {% endblock %}
+
