@@ -123,11 +123,12 @@ class PropertyType(Model):
 
     def __str__(self):
         if self.house:
-            return f"{self.house}"
-        if self.ground:
-            return f"{self.ground}"
-        if self.apartment:
-            return f"{self.apartment}"
+            return str(self.house)
+        elif self.ground:
+            return str(self.ground)
+        elif self.apartment:
+            return str(self.apartment)
+        return "Nedefinováno"
 
 
 class Auction(Model):
@@ -240,10 +241,11 @@ class Bid(Model):
         self.clean()
         is_new = self.pk is None
         super().save(*args, **kwargs)
+        if self.auction.act_value == None:
+            self.auction.act_value = self.auction.min_value
 
         if is_new:
-            if self.auction.act_value == None:
-                self.auction.act_value = self.auction.min_value
+
             self.auction.act_value = int(self.auction.act_value) + int(self.bid_amount)
             self.auction.save()
             time = self.auction.date_end_auction.replace(tzinfo=pytz.utc) - datetime.datetime.now().replace(tzinfo=pytz.utc)
