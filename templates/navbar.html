@@ -1,103 +1,216 @@
+<!DOCTYPE html>
 {% load static %}
 {% load group_tags %}
 
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">
-      <img src="{% static 'viewer/images/image.png' %}" alt="Logo" style="height: 40px; margin-right: 10px;">
-      Dražby nemovitostí
-    </a>
+<html {% if LANGUAGE_CODE %}lang="{{ LANGUAGE_CODE }}"{% endif %}>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auction house - dražby nemovitostí</title>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'viewer/style.css' %}">
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" href="/">Domů</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="aukceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Aukce
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="aukceDropdown">
-            <li><a class="dropdown-item" href="/auctions/houses">Domy</a></li>
-            <li><a class="dropdown-item" href="/auctions/apartments">Byty</a></li>
-            <li><a class="dropdown-item" href="/auctions/grounds">Pozemky</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'kontakt' %}">Kontakt</a>
-        </li>
-        {% if user|has_group:"Admins" %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'insert_data' %}">Administrace</a>
-        </li>
-        {% endif %}
-        {% if user|has_group:"Users" %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'won_auctions' %}">Vyhrané aukce</a>
-        </li>
-        {% endif %}
-      </ul>
+    <!-- Dark theme specific styles -->
+    <style>
+        body {
+            background-color: #121212; /* Tmavé pozadí */
+            color: #ffffff; /* Bílé písmo */
+        }
 
-      <form class="d-flex align-items-center me-2" method="get" action="{% url 'auctions_list' %}">
-        <input class="form-control me-2" type="text" name="q" placeholder="Hledat aukci" value="{{ request.GET.q }}">
-        <button class="btn btn-light" type="submit">Hledat</button>
-      </form>
+        .navbar {
+            background-color: #1c1c1c; /* Tmavší barva navbaru */
+            color: #ffffff;
+        }
 
-      <ul class="navbar-nav mb-2 mb-lg-0">
-        {% if user.is_authenticated %}
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ user }}
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" href="{% url 'password_change' %}">Změnit heslo</a></li>
-            <li><a class="dropdown-item" href="{% url 'logout' %}">Odhlásit se</a></li>
-          </ul>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link btn-orange" href="{% url 'login' %}">Přihlásit</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'signup' %}">Registrovat</a>
-        </li>
-        {% endif %}
-      </ul>
+        .navbar-brand, .nav-link {
+            color: #ffffff; /* Barva textu v navbaru */
+        }
+
+        .dropdown-menu {
+            background-color: #333;
+            color: #ffffff;
+        }
+
+        .jumbotron {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            padding-top: 80px;
+        }
+
+        .btn {
+            background-color: #ff8800; /* Oranžová pro tlačítka */
+            color: #ffffff;
+        }
+
+        .btn:hover {
+            background-color: #ff6600;
+        }
+
+        .form-control {
+            background-color: #333;
+            color: #ffffff;
+            border: 1px solid #555;
+        }
+
+        .form-control:focus {
+            background-color: #444;
+            border-color: #777;
+            color: #ffffff;
+        }
+
+        .btn-light {
+            background-color: #ff8800;
+            border: none;
+            color: white;
+        }
+
+        .btn-light:hover {
+            background-color: #ff6600;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px;
+            }
+
+            .jumbotron {
+                padding-top: 100px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top info bar -->
+    <div class="top-info-bar text-white" style="background-color: #1c1c1c; padding: 5px 15px; font-size: 12px; text-align: left; display: flex; justify-content: space-between; margin-bottom: 0;">
+        <div>
+            <span id="currentTime">Čas: 00:00:00</span>
+            {% if user.is_authenticated %}
+                &nbsp;|&nbsp; <span id="loginDuration">Doba přihlášení: 00:00:00</span>
+            {% endif %}
+        </div>
+        <div>
+            <a href="{% url 'kontakt' %}" class="text-white" style="text-decoration: none;">Kontakt</a>
+        </div>
     </div>
-  </div>
-</nav>
 
+    <!-- Main navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{% static 'viewer/images/image.png' %}" alt="Logo" style="height: 40px; margin-right: 10px;">
+                Dražby nemovitostí
+            </a>
 
-<script>
-  function updateTime() {
-    const currentTime = new Date();
-    document.getElementById('currentTime').textContent = `Čas: ${currentTime.toLocaleTimeString()}`;
-  }
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-  function updateLoginDuration() {
-    const loginTime = new Date(sessionStorage.getItem('loginTime'));
-    const now = new Date();
-    const duration = new Date(now - loginTime);
-    const hours = String(duration.getUTCHours()).padStart(2, '0');
-    const minutes = String(duration.getUTCMinutes()).padStart(2, '0');
-    const seconds = String(duration.getUTCSeconds()).padStart(2, '0');
-    document.getElementById('loginDuration').textContent = `Doba přihlášení: ${hours}:${minutes}:${seconds}`;
-  }
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="aukceDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Aukce
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="aukceDropdown">
+                            <li><a class="dropdown-item" href="/auctions/houses">Domy</a></li>
+                            <li><a class="dropdown-item" href="/auctions/apartments">Byty</a></li>
+                            <li><a class="dropdown-item" href="/auctions/grounds">Pozemky</a></li>
+                        </ul>
+                    </li>
+                    {% if user|has_group:"Admins" %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'insert_data' %}">Administrace</a>
+                    </li>
+                    {% endif %}
+                    {% if user|has_group:"Users" %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'won_auctions' %}">Vyhrané aukce</a>
+                    </li>
+                    {% endif %}
+                </ul>
 
-  if (!sessionStorage.getItem('loginTime')) {
-    sessionStorage.setItem('loginTime', new Date().toISOString());
-  }
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <form class="d-flex align-items-center me-2" method="get" action="{% url 'auctions_list' %}">
+                            <input class="form-control me-2" type="text" name="q" placeholder="Hledat aukci" value="{{ request.GET.q }}">
+                            <button class="btn btn-light" type="submit">Hledat</button>
+                        </form>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown"
+                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ user }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'password_change' %}">Změnit heslo</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}" onclick="resetLoginDuration()">Odhlásit se</a></li>
+                        </ul>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn-orange" href="{% url 'login' %}">Přihlásit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'signup' %}">Registrovat</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-  function resetLoginDuration() {
-    sessionStorage.removeItem('loginTime');
-  }
+    <div class="container-fluid">
+        <div class="jumbotron">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
 
-  setInterval(updateTime, 1000);
-  {% if user.is_authenticated %}
-  setInterval(updateLoginDuration, 1000);
-  {% endif %}
-</script>
+    <div id="cookie-banner" style="display: none; position: fixed; bottom: 0; width: 100%; background: #333; color: white; text-align: center; padding: 10px;">
+        <p>Kliknutím na tlačítko "Souhlasím" potvrzujete, že máte rádi sušenky!</p>
+        <button id="accept-cookies" style="background-color: green; color: white; padding: 5px 10px;">Souhlasím</button>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <!-- JavaScript Files -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script>
+        function updateTime() {
+            const currentTime = new Date();
+            document.getElementById('currentTime').textContent = `Čas: ${currentTime.toLocaleTimeString()}`;
+        }
+
+        function updateLoginDuration() {
+            const loginTime = new Date(sessionStorage.getItem('loginTime'));
+            const now = new Date();
+            const duration = new Date(now - loginTime);
+            const hours = String(duration.getUTCHours()).padStart(2, '0');
+            const minutes = String(duration.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(duration.getUTCSeconds()).padStart(2, '0');
+            document.getElementById('loginDuration').textContent = `Doba přihlášení: ${hours}:${minutes}:${seconds}`;
+        }
+
+        if (!sessionStorage.getItem('loginTime')) {
+            sessionStorage.setItem('loginTime', new Date().toISOString());
+        }
+
+        function resetLoginDuration() {
+            sessionStorage.removeItem('loginTime');
+        }
+
+        setInterval(updateTime, 1000);
+        {% if user.is_authenticated %}
+        setInterval(updateLoginDuration, 1000);
+        {% endif %}
+    </script>
+</body>
+</html>
