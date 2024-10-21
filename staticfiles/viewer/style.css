@@ -1,25 +1,25 @@
 .navbar {
-    background-color: #3498db;
-    padding: 0px 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #3498db;
     height: 50px;
-    z-index: 1000;
+    padding: 0 10px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .navbar-nav {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     list-style: none;
     padding-left: 0;
     margin: 0;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .nav-item {
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .nav-link {
@@ -194,10 +194,12 @@ button:hover {
 }
 
 .form-control {
+    max-width: 250px;
+    width: 150%;
     margin-right: 5px;
     height: 30px;
     padding: 5px 10px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     transition: background-color 1s ease, border-color 1s ease;
 }
 
@@ -210,7 +212,7 @@ button:hover {
 .btn-light {
     height: 36px;
     padding: 5px 10px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     background-color: #ffffff;
     color: #3498db;
     border: 1px solid #3498db;
@@ -350,4 +352,49 @@ button:hover {
 .navbar-brand,
 .nav-item a {
     color: #333;
+}
+
+@media (max-width: 992px) {
+    .navbar-nav .nav-item {
+        margin-right: 5px; /* Zmenšíme rozestupy mezi položkami */
+    }
+
+    .form-control {
+        width: 120px; /* Další zmenšení vyhledávacího pole */
+    }
+
+    .navbar-brand {
+        font-size: 1rem; /* Zmenšíme logo text */
+    }
+
+    .nav-link {
+        font-size: 0.85rem; /* Zmenšíme text v navbaru */
+    }
+
+    .btn-light {
+        font-size: 0.85rem; /* Zmenšíme text tlačítek */
+    }
+}
+
+/* Pro ještě menší obrazovky */
+@media (max-width: 768px) {
+    .navbar-nav .nav-item {
+        margin-right: 3px;
+    }
+
+    .form-control {
+        width: 100px; /* Další zmenšení vyhledávacího pole pro mobilní zařízení */
+    }
+
+    .navbar-brand {
+        font-size: 0.9rem;
+    }
+
+    .nav-link {
+        font-size: 0.75rem;
+    }
+
+    .btn-light {
+        font-size: 0.75rem;
+    }
 }

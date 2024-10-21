@@ -86,7 +86,7 @@
 <script>
   function updateTime() {
     const currentTime = new Date();
-    document.getElementById('currentTime').textContent = `Čas: ${currentTime.toLocaleTimeString()}`;
+    document.getElementById('currentTime').textContent = Čas: ${currentTime.toLocaleTimeString()};
   }
 
   function updateLoginDuration() {
@@ -96,7 +96,7 @@
     const hours = String(duration.getUTCHours()).padStart(2, '0');
     const minutes = String(duration.getUTCMinutes()).padStart(2, '0');
     const seconds = String(duration.getUTCSeconds()).padStart(2, '0');
-    document.getElementById('loginDuration').textContent = `Doba přihlášení: ${hours}:${minutes}:${seconds}`;
+    document.getElementById('loginDuration').textContent = Doba přihlášení: ${hours}:${minutes}:${seconds};
   }
 
   if (!sessionStorage.getItem('loginTime')) {
