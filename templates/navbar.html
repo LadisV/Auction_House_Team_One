@@ -1,36 +1,24 @@
 {% load static %}
 {% load group_tags %}
 
-<div class="top-info-bar text-white" style="background-color: #3498db; padding: 5px 15px; font-size: 12px; text-align: left; display: flex; justify-content: space-between; align-items: center;">
-  <div>
-    <span id="currentTime">Čas: 00:00:00</span>
-    {% if user.is_authenticated %}
-      &nbsp;|&nbsp; <span id="loginDuration">Doba přihlášení: 00:00:00</span>
-    {% endif %}
-  </div>
-  <div>
-    <a href="{% url 'kontakt' %}" class="text-white" style="text-decoration: none;">Kontakt</a>
-  </div>
-</div>
-
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #5cabdd; margin-top: 0;">
+<nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
-    <a class="navbar-brand text-white d-flex align-items-center" href="/">
+    <a class="navbar-brand" href="/">
       <img src="{% static 'viewer/images/image.png' %}" alt="Logo" style="height: 40px; margin-right: 10px;">
       Dražby nemovitostí
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-      data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-      aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Domů</a>
+        </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" id="aukceDropdown"
-            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="aukceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Aukce
           </a>
           <ul class="dropdown-menu" aria-labelledby="aukceDropdown">
@@ -39,50 +27,50 @@
             <li><a class="dropdown-item" href="/auctions/grounds">Pozemky</a></li>
           </ul>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'kontakt' %}">Kontakt</a>
+        </li>
         {% if user|has_group:"Admins" %}
         <li class="nav-item">
-          <a class="nav-link text-white" href="{% url 'insert_data' %}">Administrace</a>
+          <a class="nav-link" href="{% url 'insert_data' %}">Administrace</a>
         </li>
         {% endif %}
-
         {% if user|has_group:"Users" %}
         <li class="nav-item">
-          <a class="nav-link text-white" href="{% url 'won_auctions' %}">Vyhrané aukce</a>
+          <a class="nav-link" href="{% url 'won_auctions' %}">Vyhrané aukce</a>
         </li>
         {% endif %}
       </ul>
 
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <form class="d-flex align-items-center" method="get" action="{% url 'auctions_list' %}">
-              <input class="form-control me-2" type="text" name="q" placeholder="Hledat aukci" value="{{ request.GET.q }}">
-              <button class="btn btn-light" type="submit">Hledat</button>
-          </form>
+      <form class="d-flex align-items-center me-2" method="get" action="{% url 'auctions_list' %}">
+        <input class="form-control me-2" type="text" name="q" placeholder="Hledat aukci" value="{{ request.GET.q }}">
+        <button class="btn btn-light" type="submit">Hledat</button>
+      </form>
 
-        </li>
+      <ul class="navbar-nav mb-2 mb-lg-0">
         {% if user.is_authenticated %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle text-white" href="#" id="userDropdown"
-            role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             {{ user }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
             <li><a class="dropdown-item" href="{% url 'password_change' %}">Změnit heslo</a></li>
-            <li><a class="dropdown-item" href="{% url 'logout' %}" onclick="resetLoginDuration()">Odhlásit se</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Odhlásit se</a></li>
           </ul>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link text-white btn-orange" href="{% url 'login' %}">Přihlásit</a>
+          <a class="nav-link btn-orange" href="{% url 'login' %}">Přihlásit</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="{% url 'signup' %}">Registrovat</a>
+          <a class="nav-link" href="{% url 'signup' %}">Registrovat</a>
         </li>
         {% endif %}
       </ul>
     </div>
   </div>
 </nav>
+
 
 <script>
   function updateTime() {
