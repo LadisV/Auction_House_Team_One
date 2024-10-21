@@ -1,25 +1,49 @@
 .navbar {
+    background-color: #3498db;
+    padding: 0px 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #3498db;
     height: 50px;
-    padding: 0 10px;
-    overflow: hidden;
-    white-space: nowrap;
+    z-index: 1000;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-light .navbar-nav .nav-link {
+        color: white; /* Bílý text pro lepší čitelnost */
+        background-color: #3498db; /* Modré pozadí pro navigační odkazy */
+        z-index: 1001; /* Zajištění vrchní vrstvy pro odkazy */
+    }
+
+    /* Dropdown menu položky */
+    .navbar-light .navbar-nav .dropdown-menu {
+        background-color: #3498db; /* Modré pozadí */
+        z-index: 1001; /* Vrstva pro dropdown menu */
+    }
+
+    .navbar-light .navbar-nav .dropdown-item {
+        color: white; /* Bílý text pro dropdown */
+        z-index: 1002; /* Vyšší vrstva pro položky dropdownu */
+    }
+
+    .navbar-light .navbar-nav .dropdown-item:hover {
+        background-color: #2980b9; /* Tmavší modrá při hoveru */
+        color: white;
+    }
 }
 
 .navbar-nav {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     list-style: none;
     padding-left: 0;
     margin: 0;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .nav-item {
-    margin-right: 10px;
+    margin-right: 20px;
 }
 
 .nav-link {
@@ -70,6 +94,7 @@
 .dropdown-menu {
     background-color: #15c5c5;
     color: white;
+    z-index: 1001;
 }
 
 .dropdown-item:hover {
@@ -79,6 +104,9 @@
 
 .dropdown-item {
     color: white;
+    z-index: 1002;
+    right: 0;
+    left: auto;
 }
 
 @media (max-width: 768px) {
@@ -134,6 +162,11 @@ h6 {
     font-weight: bold;
     font-style: italic;
     color: red;
+}
+
+.dropdown-item {
+    padding: 8px 15px;
+    font-size: 0.9rem;
 }
 
 input[type="text"],
@@ -194,12 +227,10 @@ button:hover {
 }
 
 .form-control {
-    max-width: 250px;
-    width: 150%;
     margin-right: 5px;
     height: 30px;
     padding: 5px 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: background-color 1s ease, border-color 1s ease;
 }
 
@@ -212,7 +243,7 @@ button:hover {
 .btn-light {
     height: 36px;
     padding: 5px 10px;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     background-color: #ffffff;
     color: #3498db;
     border: 1px solid #3498db;
@@ -285,6 +316,7 @@ button:hover {
     margin: 0 auto;
 }
 
+
 .carousel-item img {
     width: 100%;
     height: 100%;
@@ -292,16 +324,6 @@ button:hover {
     border-radius: 10px;
 }
 
-.carousel-control-prev, .carousel-control-next {
-    width: 5%;
-}
-
-.carousel-control-prev-icon, .carousel-control-next-icon {
-    background-color: rgba(0, 0, 0, 0.8);
-    border-radius: 25%;
-    width: 50px;
-    height: 50px;
-}
 
 .btn {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -331,70 +353,4 @@ button:hover {
     padding: 5px;
     margin-bottom: 5px;
     border-radius: 4px;
-}
-
-.top-info-bar {
-    background-color: #0f5dac;
-    padding: 5px 15px;
-    font-size: 12px;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0;
-    color: white;
-}
-
-.jumbotron {
-    padding-top: 70px;
-}
-
-.nav-link.dropdown-toggle,
-.navbar-brand,
-.nav-item a {
-    color: #333;
-}
-
-@media (max-width: 992px) {
-    .navbar-nav .nav-item {
-        margin-right: 5px; /* Zmenšíme rozestupy mezi položkami */
-    }
-
-    .form-control {
-        width: 120px; /* Další zmenšení vyhledávacího pole */
-    }
-
-    .navbar-brand {
-        font-size: 1rem; /* Zmenšíme logo text */
-    }
-
-    .nav-link {
-        font-size: 0.85rem; /* Zmenšíme text v navbaru */
-    }
-
-    .btn-light {
-        font-size: 0.85rem; /* Zmenšíme text tlačítek */
-    }
-}
-
-/* Pro ještě menší obrazovky */
-@media (max-width: 768px) {
-    .navbar-nav .nav-item {
-        margin-right: 3px;
-    }
-
-    .form-control {
-        width: 100px; /* Další zmenšení vyhledávacího pole pro mobilní zařízení */
-    }
-
-    .navbar-brand {
-        font-size: 0.9rem;
-    }
-
-    .nav-link {
-        font-size: 0.75rem;
-    }
-
-    .btn-light {
-        font-size: 0.75rem;
-    }
 }
